@@ -1,0 +1,26 @@
+{% load static %}
+<head>
+    <meta charset="utf-8">
+	<!-- PAGE TITLE HERE -->
+	<title>{%block title%}Home{%endblock title%}</title>
+	
+    {% include 'includes/styles.html' %}  
+</head>
+    
+    {% include 'includes/preloader.html' %}
+    <!--Main wrapper start-->
+    <div id="main-wrapper">
+        <!--Nav header start-->
+        {% include 'includes/headerLogo.html' %}
+        <!--Sidebar start-->
+        {% include 'includes/sidebar.html' %}
+		<!--Content body start-->
+       
+    {% block content %}
+    
+    {% endblock content %}
+        
+	</div>
+    <!--Main wrapper end-->
+    {% include 'includes/scripts.html' %}
+    <!-- Specific Page JS goes HERE  -->
