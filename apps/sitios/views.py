@@ -11,8 +11,9 @@ import openpyxl
 import numpy as np
 
 from apps.sitios.dicColumns import *
+
 def home(request):
-    return render(request,'home.html')
+    return render(request,'index.html')
 
 def listarSitios(request):
     sitios = SitiosTotales.objects.all()
@@ -52,7 +53,6 @@ def editarSitios(request, S_ATT_ID):
      
 
 def cargarSitios(request):
-    
     if request.method == "POST":
         upload_file = request.FILES['file']
         df = pd.read_excel(upload_file, engine='openpyxl', header=1)
@@ -96,15 +96,12 @@ def cargarFO(request):
 
 
 def cargarAGG(request):
-
     if request.method == 'POST':
         upload_file = request.FILES['file']
         df = pd.read_excel(upload_file, engine='openpyxl',header=1)
         df = df.replace(np.nan,' ')
         df.columns = df.columns.str.strip() 
-
         df.rename(columns=nomColsAgg, inplace=True)
-           
         engine = create_engine(conexion(),echo=False)
         df.to_sql(AGG._meta.db_table, if_exists='replace', con=engine,index=False)
 
@@ -128,15 +125,12 @@ def cargarAGG(request):
 #     return render(request, "sitios/cargarAGG.html")
 
 def cargarProyeccion(request):
-
     if request.method == 'POST':
         upload_file = request.FILES['file']
-            
         df = pd.read_excel(upload_file, engine='openpyxl',header=1)
         df = df.replace(np.nan,' ')
         engine = create_engine(conexion(),echo=False)
         df.rename(columns=nomColsProyeccion,inplace=True)
-       
         df.to_sql(Proyeccion._meta.db_table, if_exists='replace', con=engine,index=False)
 
     return render(request, "sitios/cargarProyeccion.html")
@@ -160,7 +154,6 @@ def cargarProyeccion(request):
 def cargarMigracion(request):
     if request.method == 'POST':
         upload_file = request.FILES['file']
-            
         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
         df = df.replace(np.nan,'-')
         for name in df.columns:
@@ -205,9 +198,7 @@ def cargarMicroondas(request):
             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
             df[name] = df[name].str.upper()
         df.rename(columns=nomColsMW,inplace=True)   
-      
         engine = create_engine(conexion(),echo=False)
-
         df.to_sql(MW._meta.db_table, if_exists='replace', con=engine,index=False)
 
     return render(request, "sitios/cargarMicroondas.html")
@@ -285,14 +276,12 @@ def cargarMicroondas(request):
 def cargarCarrier(request):
     if request.method == 'POST':
         upload_file = request.FILES['file']
-            
         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
         df = df.replace(np.nan,' ')
         for name in df.columns:
             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
             df[name] = df[name].str.upper()
         df.rename(columns=nomColsCarrier,inplace=True)
-    
         engine = create_engine(conexion(),echo=False)
         df.to_sql(Carrier._meta.db_table, if_exists='replace', con=engine,index=False)
 
@@ -331,14 +320,12 @@ def cargarCarrier(request):
 def cargarPon(request):
     if request.method == 'POST':
         upload_file = request.FILES['file']
-            
         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
         df = df.replace(np.nan,' ')
         for name in df.columns:
             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
             df[name] = df[name].str.upper()
         df.rename(columns=nomColsPon,inplace=True)
-       
         engine = create_engine(conexion(),echo=False)
         df.to_sql(Pon._meta.db_table,if_exists='replace',con=engine,index=False)
 
@@ -348,69 +335,31 @@ def cargarPon(request):
 def cargarPanda(request):
     if request.method == 'POST':
         upload_file = request.FILES['file']
-            
         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
         df = df.replace(np.nan,' ')
         for name in df.columns:
             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
             df[name] = df[name].str.upper()
         df.rename(columns=nomColsPanda,inplace=True)
-       
         engine = create_engine(conexion(),echo=False)
         df.to_sql(Panda._meta.db_table,if_exists='replace',con=engine,index=False)
 
     return render(request, "sitios/cargarPanda.html")
 
    
-# def cargarTellus(request):
-#     if request.method == 'POST':
-#         upload_file = request.FILES['file']
-            
-#         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
-#         df = df.replace(np.nan,' ')
-#         for name in df.columns:
-#             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
-#             df[name] = df[name].str.upper()
-#         df.rename(columns={
-#                    'SYSTEM ID':'SYSTEM_ID',	
-#                     'SITE':'SITE',	
-#                     'NAME':'NAME',	
-#                     'GSM':'GSM',	
-#                     'UMTS':'UMTS',	
-#                     'LTE':'LTE',	
-#                     'HIERARCHY':'HIERARCHY',	
-#                     'COLLOS':'COLLOS',	
-#                     'CVE INSTALL TYPE':'CVE_INSTALL_TYPE',	
-#                     'OPERATIVE STATUS':'OPERATIVE_STATUS',	
-#                     'DATE ONAIR':'DATE_ONAIR',	
-#                     'OWNER':'OWNER',	
-#                     'ADDRESS':'ADDRESS',	
-#                     'MUNICIPALITY':'MUNICIPALITY',	
-#                     'STATE NAME':'STATE_NAME',	
-#                     'MARKET':'MARKET',	
-#                     'LATITUDE':'LATITUDE',	
-#                     'LONGITUDE':'LONGITUDE',	
-#                     'CELL REGION':'CELL_REGION',	
-#                     'CELLOWNER':'CELLOWNER',	
-#                     'CELLOWNER TELEPHONE':'CELLOWNER_TELEPHONE',	
-#                     'CELLOWNER EMAIL':'CELLOWNER_EMAIL',	
-#                     'COORDINATOR':'COORDINATOR',	
-#                     'COORDINATOR TELEPHONE':'COORDINATOR_TELEPHONE',	
-#                     'COORDINATOR EMAIL':'COORDINATOR_EMAIL',	
-#                     'MANAGER':'MANAGER',	
-#                     'MANAGER TELEPHONE':'MANAGER_TELEPHONE',	
-#                     'MANAGER EMAIL':'MANAGER_EMAIL',	
-#                     'DIRECTOR':'DIRECTOR',	
-#                     'DIRECTOR TELEPHONE':'DIRECTOR_TELEPHONE',	
-#                     'DIRECTOR EMAIL':'DIRECTOR_EMAIL',	
-#                     'COORDINATION':'COORDINATION',	
-#                     'MANAGEMENT':'MANAGEMENT',	
-#                     'REGION':'REGION'},inplace=True)
-       
-#         engine = create_engine(conexion(),echo=False)
-#         df.to_sql(Tellus._meta.db_table,if_exists='replace',con=engine,index=False)
+def cargarTellus(request):
+    if request.method == 'POST':
+        upload_file = request.FILES['file']
+        df = pd.read_excel(upload_file, engine='openpyxl',header=0)
+        df = df.replace(np.nan,' ')
+        for name in df.columns:
+            df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
+            df[name] = df[name].str.upper()
+        df.rename(columns=nomColsTellus,inplace=True)
+        engine = create_engine(conexion(),echo=False)
+        df.to_sql(Tellus._meta.db_table,if_exists='replace',con=engine,index=False)
 
-#     return render(request, "sitios/cargarTellus.html")
+    return render(request, "sitios/cargarTellus.html")
 
 # def cargarSemaforo(request):
 #     if request.method == 'POST':
@@ -468,49 +417,18 @@ def cargarPanda(request):
 #         df.to_sql(Semaforos._meta.db_table,if_exists='replace',con=engine,index=False)
 #     return render(request, "sitios/cargarSemaforo.html")
  
-# def cargarCapacidadManual(request):
-#     if request.method == 'POST':
-#         upload_file = request.FILES['file']
-            
-#         df = pd.read_excel(upload_file, engine='openpyxl',header=0)
-#         df = df.replace(np.nan,' ')
-#         for name in df.columns:
-#             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
-#             df[name] = df[name].str.upper()
-#         df.rename(columns={
-#                         'ID_ATT':'ID_ATT',	
-#                         'TX':'TX',	
-#                         'TX Grupos Manual':'TX_GRUPOS_MANUAL',	
-#                         'TX Detalle Manual':'TX_DETALLE_MANUAL',	
-#                         'Control':'CONTROL',	
-#                         'Fecha':'FECHA',	
-#                         'POC':'POC',	
-#                         'Observaciones':'OBSERVACIONES',	
-#                         'TRACKER':'TRACKER',	
-#                         'AT&T ID':'ATT_ID',	
-#                         'Nombre':'NOMBRE',	
-#                         'Latitud':'LATITUD',	
-#                         'Longitud':'LONGITUD',	
-#                         'Estado':'ESTADO',	
-#                         'Municipio':'MUNICIPIO',	
-#                         'Mercado':'MERCADO',	
-#                         'Region_Celular':'REGION_CELULAR',	
-#                         'Region':'REGION',	
-#                         'Vendor':'VENDOR',	
-#                         'Cobertura':'COBERTURA',	
-#                         'Tipo':'TIPO',	
-#                         'Proyecto':'PROYECTO',	
-#                         'Clasificacion':'CLASIFICACION',	
-#                         'Control de cambios RAN':'CONTROL_CAMBIOS_RAN',	
-#                         'Base Origen TX':'BASE_ORIGEN_TX',	
-#                         "Grupos \nMedio TX ":'GRUPOS_MEDIO_TX',	
-#                         'TX Detalle':'TX_DETALLE',	
-#                         'Capacidad':'CAPACIDAD',	
-#                         'Control':'CONTROL'},inplace=True)
-        
-#         engine = create_engine(conexion(),echo=False)
-#         df.to_sql(CapacidadManual._meta.db_table,if_exists='replace',con=engine,index=False)
-#     return render(request, "sitios/cargarCapacidadManual.html")
+def cargarCapacidadManual(request):
+    if request.method == 'POST':
+        upload_file = request.FILES['file']
+        df = pd.read_excel(upload_file, engine='openpyxl',header=0)
+        df = df.replace(np.nan,' ')
+        for name in df.columns:
+            df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
+            df[name] = df[name].str.upper()
+        df.rename(columns=nomColsCapacidadManual,inplace=True)
+        engine = create_engine(conexion(),echo=False)
+        df.to_sql(CapacidadManual._meta.db_table,if_exists='replace',con=engine,index=False)
+    return render(request, "sitios/cargarCapacidadManual.html")
 
 # def cargarFiltroCapacidadManual(request):
 #     if request.method == 'POST':
@@ -651,75 +569,6 @@ def cargarPanda(request):
 #     return render(request, "sitios/cargarBaseSinTx.html")
 
 
-
-# def cargarNOC(request):
-#     if request.method == 'POST':
-#         upload_file = request.FILES['file']
-#         df = pd.read_excel(upload_file, engine='openpyxl',header=0)  
-#         df = df.replace(np.nan,'-')
-#         for name in df.columns:
-#             df[name] = df[name].apply(lambda value:" ".join(str(value).strip().split()))
-#             df[name] = df[name].str.upper()
-#         # df = pd.DataFrame(data, 
-#         #                   columns = ['VENDOR', 
-#         #                              'IP_ADDRESS', 
-#         #                              'PREFIX_LENGTH', 
-#         #                              'INTERFACE_NAME', 
-#         #                              'ID_SITE_DEVICE_NAME', 
-#         #                              'DEVICE_NAME',
-#         #                              'SITE_ID',
-#         #                              'LAGPORT',
-#         #                              'WORK_IP',
-#         #                              'WORK_IP2',
-#         #                              'WORK_IP3',
-#         #                              'LAG_CONFIGURATED_SPEED',
-#         #                              'LAG_CLASS',
-#         #                              'WORK_SPEED',
-#         #                              'TO',
-#         #                              'IP_ADDRESS_P2P',
-#         #                              'PREFIX_LENGTH_P2P',
-#         #                              'SITE_ID_P2P',
-#         #                              'ID_SITE_NAME_P2P',
-#         #                              'SITE_NAME_P2P',
-#         #                              'INTERFACE_NAME_P2P',
-#         #                              'LAGPORT_P2P',
-#         #                              'CONFIGURATED_SPEED_P2P',
-#         #                              'LAGG_CLASS_P2P',
-#         #                              'OPERATIONAL_SPEED_KBPS_P2P',
-#         #                              'VENDOR_P2P'])
-
-
-#         # filtro_com = df[df['DEVICE_NAME'].str.endswith("com")]
-#         # filtro_com = filtro_com["DEVICE_NAME"].str.slice(2,12)
-#         # filtro_mx = df[df["DEVICE_NAME"].str.endswith("mx")]
-#         # filtro_mx = filtro_mx["DEVICE_NAME"].str.slice(2,8)
-
-#         # filtro2_com = df[df["SITE_NAME_P2P"].str.endswith("com")]
-#         # filtro2_com = filtro2_com["SITE_NAME_P2P"].str.slice(2,12)
-#         # filtro2_mx = df[df["SITE_NAME_P2P"].str.endswith("mx")]
-#         # filtro2_mx = filtro2_mx["SITE_NAME_P2P"].str.slice(2,8)
-
-#         # for i,v in enumerate(df.columns):
-#         #     if v =='ID_SITE_DEVICE_NAME':
-#         #         df['ID_SITE_1'] = filtro_com
-#         #         df['ID_SITE_2'] = filtro_mx
-#         #         df['ID_SITE_DEVICE_NAME'] = df[['ID_SITE_1','ID_SITE_2']].apply(lambda x: ''.join(x.astype('str')), axis=1)
-#         #         df['ID_SITE_DEVICE_NAME'] = df['ID_SITE_DEVICE_NAME'].str.replace('nan',' ')
-
-#         # for i,v in enumerate(df.columns):
-#         #     if v == 'ID_SITE_NAME_P2P':
-#         #         df['ID_SITE_3'] = filtro2_com
-#         #         df['ID_SITE_4'] = filtro2_mx
-#         #         df['ID_SITE_NAME_P2P'] = df[['ID_SITE_3','ID_SITE_4']].apply(lambda x: ''.join(x.astype('str')), axis=1)
-#         #         df['ID_SITE_NAME_P2P'] = df['ID_SITE_NAME_P2P'].str.replace('nan',' ')
-
-#         # df.drop(['ID_SITE_1','ID_SITE_2','ID_SITE_3','ID_SITE_4'],axis=1)
-#         # df = data.replace(np.nan,'-')
-        
-                  
-#         engine = create_engine(conexion(),echo=False)
-#         df.to_sql(NOC._meta.db_table,if_exists='replace',con=engine,index=False)
-#     return render(request, "sitios/cargarNOC.html")
 
 # def listarFO(request):
 #     busqueda = request.POST.get("buscar")

@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     # path('cargarSitios/', views.SitiosTotales.as_view(), name='cargarSitios'),
     # path('cargarSitios2/', views.SitiosTotales.as_view(), name='cargarSitios2'),
+   
     path('cargarSitios/', views.cargarSitios, name='cargarSitios'),
     path('listarSitios/', views.listarSitios, name='listarSitios'),
     path('crearSitios/', views.crearSitios, name='crearSitios'),
@@ -23,9 +24,9 @@ urlpatterns = [
     path('cargarCarrier/', views.cargarCarrier, name='cargarCarrier'),
     path('cargarPon/', views.cargarPon, name='cargarPon'),
     path('cargarPanda/', views.cargarPanda, name='cargarPanda'),
-    # path('cargarTellus/', views.cargarTellus, name='cargarTellus'),
+    path('cargarTellus/', views.cargarTellus, name='cargarTellus'),
+    path('cargarCapacidadManual/', views.cargarCapacidadManual, name='cargarCapacidadManual'),
     # path('cargarSemaforo/', views.cargarSemaforo, name='cargarSemaforo'),
-    # path('cargarCapacidadManual/', views.cargarCapacidadManual, name='cargarCapacidadManual'),
     #path('cargarCapacidadManual/', views.cargarFiltroCapacidadManual, name='cargarCapacidadManual'),
     # path('cargarNOC/', views.cargarNOC, name='cargarNOC'),
     # path('cargarBaseSinTx/', views.cargarFiltroBaseSinTx, name='cargarBaseSinTx'),
