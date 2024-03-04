@@ -11,7 +11,7 @@
           
               <div class="compose-content">
             
-                <form action="{% url 'cargarAGG'%}" class="dropzone" method="POST" id="MyDropZone">
+                <form action="{% url 'cargarCapacidadManual'%}" class="dropzone" method="POST" id="MyDropZone">
                   {% csrf_token %}
                   <div class="fallback">
                     <input name="file" type="file" multiple>

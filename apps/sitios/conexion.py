@@ -10,7 +10,7 @@ def conexion():
             user=user,
             password=password,
             database_name=database_name,
-            host=host,
-            port=port)
+            port=port,
+            host=host)
     
     return database_url
